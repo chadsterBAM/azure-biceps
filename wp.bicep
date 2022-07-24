@@ -36,7 +36,7 @@ resource appConfig 'Microsoft.Web/sites/config@2021-03-01' = {
   parent: appService
   name: 'web'
   properties: {
-    phpVersion: '8.1'
+    phpVersion: '8.0'
   }
 }
 resource sourceControls 'Microsoft.Web/sites/sourcecontrols@2021-03-01' = {
