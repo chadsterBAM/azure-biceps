@@ -1,24 +1,14 @@
-param sku string = 'F1'
-param repoUrl string = 'https://github.com/azureappserviceoss/wordpress-azure'
-param branch string = 'master'
-param location string = resourceGroup().location
-var hostingPlanName_var = '${uniqueString(resourceGroup().id)}hostingplan'
-var siteName_var = '${uniqueString(resourceGroup().id)}website'
-resource hostingPlanName 'Microsoft.Web/serverfarms@2020-06-01' = {
-  sku: {
-    name: sku
-    capacity: 1
-  }
-  name: hostingPlanName_var
+param appServicePrefix string
+param location string = 'eastus'
+param appServicePlanId string
+param repoUrl string = 'https://github.com/daveRendon/wordpress-azure/'
+resource appService 'Microsoft.Web/sites@2022-07-24' = {
+  name: '${appServicePrefix}-site'
   location: location
-  properties: {}
-}
-resource siteName 'Microsoft.Web/sites@2022-07-24' = {
-  name: siteName_var
-  location: location
-  properties: {
-    serverFarmId: hostingPlanName.id
+  properties:{
+    serverFarmId: appServicePlanId
     siteConfig: {
+      minTlsVersion: '1.2'
       localMySqlEnabled: true
       appSettings: [
         {
@@ -39,21 +29,24 @@ resource siteName 'Microsoft.Web/sites@2022-07-24' = {
         }
       ]
     }
+    
   }
 }
-resource siteName_web 'Microsoft.Web/sites/sourcecontrols@2022-07-24' = {
-  parent: siteName
+resource appConfig 'Microsoft.Web/sites/config@2022-07-24' = {
+  parent: appService
   name: 'web'
   properties: {
+    phpVersion: '8.1'
+  }
+}
+resource sourceControls 'Microsoft.Web/sites/sourcecontrols@2022-07-24' = {
+  name: 'web'
+  parent: appService
+  properties: {
     repoUrl: repoUrl
-    branch: branch
+    branch: 'master'
     isManualIntegration: true
   }
 }
-resource Microsoft_Web_sites_config_siteName_web 'Microsoft.Web/sites/config@2022-07-24' = {
-  parent: siteName
-  name: 'web'
-  properties: {
-    phpVersion: '8.0'
-  }
-}
+// Set an output which can be accessed by the module consumer
+output siteURL string = appService.properties.hostNames[0]
