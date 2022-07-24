@@ -1,7 +1,7 @@
-param appPlanPrefix chadsstuff
+param appPlanPrefix string
 param sku string = 'S1' // The SKU of App Service Plan
 param location string = 'eastus' // Location for all resources
-resource appServicePlan 'Microsoft.Web/serverfarms@2022-07-24' = {
+resource appServicePlan 'Microsoft.Web/serverfarms@2021-01-15' = {
   //interpolate param
   name: 'AppPlan-${appPlanPrefix}'
   //pass on location param
