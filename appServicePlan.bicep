@@ -1,4 +1,4 @@
-param appPlanPrefix string
+param appPlanPrefix chadsstuff
 param sku string = 'S1' // The SKU of App Service Plan
 param location string = 'eastus' // Location for all resources
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-07-24' = {
