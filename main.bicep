@@ -1,6 +1,6 @@
 // Location for all resources
 param location string = resourceGroup().location 
-param prefix string = chadsstuff
+param prefix string
 //consume appServicePlan as module
 module appServicePlan 'appServicePlan.bicep' = {
   name:'appServicePlan'
