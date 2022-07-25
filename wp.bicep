@@ -1,7 +1,7 @@
 param appServicePrefix string
 param location string = 'eastus'
 param appServicePlanId string
-param repoUrl string = 'https://github.com/daveRendon/wordpress-azure/'
+param repoUrl string = 'https://github.com/chadsterBAM/WordPress/'
 resource appService 'Microsoft.Web/sites@2021-03-01' = {
   name: '${appServicePrefix}-site'
   location: location
